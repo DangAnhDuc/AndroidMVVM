@@ -1,4 +1,4 @@
-package com.example.androidmvvm.ViewModel;
+package com.example.androidmvvm.viewModel;
 
 import android.text.Editable;
 import android.text.TextWatcher;

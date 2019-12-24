@@ -1,43 +1,40 @@
 package com.example.androidmvvm.View;
 
-import android.app.Activity;
-
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
-
 import android.os.Bundle;
-
-import androidx.annotation.Nullable;
-import androidx.annotation.StringRes;
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.view.KeyEvent;
-import android.view.View;
-import android.view.inputmethod.EditorInfo;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
+
 import com.example.androidmvvm.R;
+import com.example.androidmvvm.callback.LoginResultCallback;
+import com.example.androidmvvm.databinding.ActivityLoginBinding;
+import com.example.androidmvvm.viewModel.LoginViewModel;
+import com.example.androidmvvm.viewModel.LoginViewModelFactory;
 
-public class LoginActivity extends AppCompatActivity {
+import es.dmoral.toasty.Toasty;
 
-    private EditText usernameEditText;
-    private EditText passwordEditText;
-    private Button loginButton;
-    private ProgressBar loadingProgressBar;
+public class LoginActivity extends AppCompatActivity implements LoginResultCallback {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
-        usernameEditText = findViewById(R.id.username);
-        passwordEditText = findViewById(R.id.password);
-        loginButton = findViewById(R.id.login);
-        loadingProgressBar = findViewById(R.id.loading);
+        ActivityLoginBinding activityLoginBinding= DataBindingUtil.setContentView(this, R.layout.activity_login);
+        activityLoginBinding.setViewModel(ViewModelProviders.of(this,
+                new LoginViewModelFactory(this))
+                .get(LoginViewModel.class));
+    }
+
+    @Override
+    public void onSuccess(String message) {
+        Toasty.success(this,"Login success", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onError(String message) {
+        Toasty.error(this,"Login faild", Toast.LENGTH_SHORT).show();
+
     }
 }
